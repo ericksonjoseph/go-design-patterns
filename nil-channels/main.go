@@ -17,14 +17,12 @@ func main() {
 	time.AfterFunc(3*time.Second, func() {
 		fmt.Println("closing 1")
 		close(ch1)
-		isClosed1 = true
 	})
 
 	// Close channel 2 after 6 seconds
 	time.AfterFunc(6*time.Second, func() {
 		fmt.Println("closing 2")
 		close(ch2)
-		isClosed2 = true
 	})
 
 	// Exit after 8 seconds
@@ -46,11 +44,13 @@ func main() {
 				// If you comment the following line, you'll see that the
 				// second case may never be called
 				ch1 = nil
+				isClosed1 = true
 			}
 		case i, open := <-ch2:
 			fmt.Println("ch2 received. i:", i, "open:", open)
 			if !open {
 				ch2 = nil
+				isClosed2 = true
 			}
 		}
 	}
